@@ -1,3 +1,10 @@
 from django.shortcuts import render
 
-# Create your views here.
+from menu_app.models import Dish
+
+def home(request):
+    dishes = Dish.objects.all()
+
+    return render(request, "menu/home.html", {
+        "dishes": dishes,
+    })

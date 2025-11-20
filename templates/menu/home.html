@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">Sol-sol!</span>
+  </div>
+</nav>
+
+<div class="container mt-4" style="max-width: 1500px; background-color: red;">
+  <div class="row mt-4">
+    {% for dish in dishes %}
+        <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+            <img src="{{ dish.image.url }}" class="img-fluid rounded-start" alt="{{ dish.name }}">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{ dish.name }}</h5>
+                <p class="card-text">{{ dish.description }}</p>
+                <p class="card-text">{{ dish.price }} ГРН / {{ dish.simelions }} §</p>
+            </div>
+            </div>
+        </div>
+        </div>
+        
+    {% endfor %}
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
