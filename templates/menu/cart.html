@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Ваш кошик</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Назва страви</th>
+                <th>Кількість</th>
+                <th>Ціна за одиницю</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.dish.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.dish.price }} ГРН</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

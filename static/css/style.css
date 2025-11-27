@@ -1,0 +1,11 @@
+.main_background {
+    background-image: linear-gradient(to right, #2190ff, #6ec1ff);
+    padding: 20px;
+}
+.my-btn {
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
