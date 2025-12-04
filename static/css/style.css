@@ -1,6 +1,7 @@
 .main_background {
     background-image: linear-gradient(to right, #2190ff, #6ec1ff);
-    padding: 20px;
+    width: 2500px;
+    border-radius: 2%;
 }
 .my-btn {
     background-color: #007bff;

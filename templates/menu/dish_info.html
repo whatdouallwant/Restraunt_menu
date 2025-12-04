@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 
-<div class="container mt-4" style="max-width: 500px; background-color: red;">
+<div class="container mt-4" style="max-width: 1200px; background-color: rgb(54, 164, 255);">
     <div class="row mt-4">
         <div class="col-md-6">
             <img src="{{ dish.image.url }}" class="img-fluid" alt="{{ dish.name }}">
@@ -11,8 +11,9 @@
             <h2>{{ dish.name }}</h2>
             <p>{{ dish.description }}</p>
             <p>Ціна: {{ dish.price }} ГРН / {{ dish.simelions }} §</p>
-            <a href="" class="btn btn-primary">Додати до кошика</a>
+            <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-primary">Додати до кошика</a>
         </div>
     </div>
 </div>
+
 {% endblock %}

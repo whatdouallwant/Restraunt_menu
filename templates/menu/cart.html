@@ -12,13 +12,23 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in cart_items %}
+            {% for cart_item in cart_items %}
             <tr>
-                <td>{{ item.dish.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.dish.price }} ГРН</td>
+                <td>{{ cart_item.dish.name }}</td>
+                <td>{{ cart_item.quantity }}</td>
+                <td>{{ cart_item.dish.price }} ГРН</td>
             </tr>
             {% endfor %}
+            {% if not cart_items %}
+            <tr>
+                <td colspan="3">Ваш кошик порожній.</td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
+    {% if cart_items %}
+        <h3>Загальна сума: {{ total_price }} ГРН</h3>
+        <a href="{% url 'order' %}" class="btn btn-success">Оформити замовлення</a>
+    {% endif %}
+
 {% endblock %}
