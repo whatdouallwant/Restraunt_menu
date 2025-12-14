@@ -17,8 +17,11 @@
                 <td>{{ cart_item.dish.name }}</td>
                 <td>{{ cart_item.quantity }}</td>
                 <td>{{ cart_item.dish.price }} ГРН</td>
+                <td>
+                    <a href="{% url 'delete_from_cart' cart_item.id %}" class="btn btn-danger btn-sm">Видалити</a>
             </tr>
             {% endfor %}
+
             {% if not cart_items %}
             <tr>
                 <td colspan="3">Ваш кошик порожній.</td>

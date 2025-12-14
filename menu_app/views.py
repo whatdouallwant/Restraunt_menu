@@ -34,6 +34,11 @@ def add_to_cart(request, dish_id):
 
     return redirect('cart')
 
+def delete_from_cart(request, item_id):
+    cart_item = CartItem.objects.get(id=item_id)
+    cart_item.delete()
+    return redirect('cart')
+
 def order(request):
     user = request.user
     cart = Cart.objects.get(user=user)
@@ -45,4 +50,11 @@ def order(request):
 
     return render(request, "menu/order.html", {
         "total_price": total_price,
+    })
+
+def filter_by_category(request, category):
+    dishes = Dish.objects.filter(category=category)
+
+    return render(request, "menu/home.html", {
+        "dishes": dishes,
     })

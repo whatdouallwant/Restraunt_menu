@@ -5,6 +5,17 @@
 <div class="container main_background">
 
   <div class="container mt-4" >
+    <form method="get" action="{% url 'filter_by_category' category='all' %}" class="d-flex flex-column align-items-center fixed-top"
+    style="margin-top: 40px; padding: 20px; border-radius:10px;">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="{% url 'home' %}" class="btn btn-secondary my-btn">Всі</a>
+        <a href="{% url 'filter_by_category' category='salad' %}" class="btn btn-secondary my-btn">Салати</a>
+        <a href="{% url 'filter_by_category' category='main_course' %}" class="btn btn-secondary my-btn">Основні страви</a>
+        <a href="{% url 'filter_by_category' category='dessert' %}" class="btn btn-secondary my-btn">Десерти</a>
+        <a href="{% url 'filter_by_category' category='beverage' %}" class="btn btn-secondary my-btn">Напої</a>
+        <a href="{% url 'filter_by_category' category='soup' %}" class="btn btn-secondary my-btn">Супи</a>
+      </div>
+    </form>
     <div class="row mt-4" style="padding: 40px;">
       {% for dish in dishes %}
           <div class="card mb-3" style="max-width: 540px;">
