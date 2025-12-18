@@ -16,4 +16,32 @@
     </div>
 </div>
 
+<h3>Відгуки</h3>
+
+{% for review in reviews %}
+    <div class="review">
+        <strong>{{ review.user.username }}</strong>
+        <span>⭐ {{ review.rating }}</span><br>
+        <p>{{ review.text }}</p>
+        <small>{{ review.created_at|date:"d.m.Y H:i" }}</small>
+    </div>
+    <hr>
+{% empty %}
+    <p>Поки що відгуків немає</p>
+{% endfor %}
+
+{% if form %}
+    <form method="post" action="{% url 'add_review' dish.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Надіслати</button>
+    </form>
+
+{% elif not user.is_authenticated %}
+    <p>Увійдіть, щоб залишити відгук</p>
+
+{% else %}
+    <p>Ви вже залишили відгук</p>
+{% endif %}
+
 {% endblock %}

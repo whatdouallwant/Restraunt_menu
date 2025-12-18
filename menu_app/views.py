@@ -1,6 +1,7 @@
-from django.shortcuts import redirect, render
-
+from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from menu_app.models import Dish, CartItem, Cart, Reviews, User
+from .forms import ReviewForm
 
 def home(request):
     dishes = Dish.objects.all()
@@ -17,10 +18,26 @@ def cart(request):
     })
 
 def dish_detail(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
+    dish = get_object_or_404(Dish, id=dish_id)
+
+    reviews = (
+        Reviews.objects
+        .filter(dish=dish)
+        .select_related('user')
+        .order_by('-created_at')
+    )
+
+    user_review = None
+    if request.user.is_authenticated:
+        user_review = reviews.filter(user=request.user).first()
+
+    form = ReviewForm() if request.user.is_authenticated and not user_review else None
 
     return render(request, "menu/dish_info.html", {
         "dish": dish,
+        "reviews": reviews,    
+        "form": form,
+        "user_review": user_review,
     })
 
 def add_to_cart(request, dish_id):
@@ -58,3 +75,20 @@ def filter_by_category(request, category):
     return render(request, "menu/home.html", {
         "dishes": dishes,
     })
+
+@login_required
+def add_review(request, dish_id):
+    dish = get_object_or_404(Dish, id=dish_id)
+
+    if Reviews.objects.filter(dish=dish, user=request.user).exists():
+        return redirect('dish_detail', dish_id=dish.id)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.dish = dish
+            review.save()
+
+    return redirect('dish_detail', dish_id=dish.id)
