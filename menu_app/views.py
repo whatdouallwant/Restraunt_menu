@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from menu_app.models import Dish, CartItem, Cart, Reviews, User
+from menu_app.models import Dish, CartItem, Cart, Order, Reviews, User
 from .forms import ReviewForm
 
 def home(request):
@@ -92,3 +92,28 @@ def add_review(request, dish_id):
             review.save()
 
     return redirect('dish_detail', dish_id=dish.id)
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Reviews, id=review_id)
+
+    if request.user == review.user:
+        review.delete()
+
+    return redirect('dish_detail', dish_id=review.dish.id)
+
+def order(request):
+    user = request.user
+    cart = Cart.objects.get(user=user)
+    cart_items = CartItem.objects.filter(cart=cart)
+    
+
+    total_price = sum(item.dish.price * item.quantity for item in cart_items)
+    payment = request.POST.get('payment')
+    address = request.POST.get('address')
+
+    cart_items.delete()
+
+    return render(request, "menu/order.html", {
+        "total_price": total_price,
+    })

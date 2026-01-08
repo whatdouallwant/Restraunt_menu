@@ -2,6 +2,39 @@
 {% block content %}
 {% load static %}
 
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" 
+  style="width: 1300px; margin: auto; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; padding: 10px;">
+      <div class="container-fluid">
+      <a class="navbar-brand">Sol-sol!</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% endif %}
+        {% if not user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
 <div class="container mt-4" style="max-width: 1200px; background-color: rgb(54, 164, 255);">
     <div class="row mt-4">
         <div class="col-md-6">
@@ -25,6 +58,12 @@
         <p>{{ review.text }}</p>
         <small>{{ review.created_at|date:"d.m.Y H:i" }}</small>
     </div>
+    {% if user.is_authenticated and user == review.user %}
+        <form method="post" action="{% url 'delete_review' review.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Видалити відгук</button>
+        </form>
+    {% endif %}
     <hr>
 {% empty %}
     <p>Поки що відгуків немає</p>
