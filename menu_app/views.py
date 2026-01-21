@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from menu_app.models import Dish, CartItem, Cart, Order, Reviews, User
+from menu_app.models import Dish, CartItem, Cart, Order, OrderItem, Reviews, User
 from .forms import ReviewForm
 
 def home(request):
@@ -10,11 +10,13 @@ def home(request):
         "dishes": dishes,
     })
 
-def cart(request):
-    cart_items = CartItem.objects.all()
+@login_required
+def cart_view(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
 
-    return render(request, "menu/cart.html", {
-        "cart_items": cart_items,
+    return render(request, 'menu/cart.html', {
+        'cart': cart,
+        'cart_items': cart.items.all(),
     })
 
 def dish_detail(request, dish_id):
@@ -40,10 +42,17 @@ def dish_detail(request, dish_id):
         "user_review": user_review,
     })
 
+@login_required
 def add_to_cart(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, dish=dish)
+    dish = get_object_or_404(Dish, id=dish_id)
+
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+
+    cart_item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        dish=dish,
+        defaults={'quantity': 1}
+    )
 
     if not created:
         cart_item.quantity += 1
@@ -56,7 +65,7 @@ def delete_from_cart(request, item_id):
     cart_item.delete()
     return redirect('cart')
 
-def order(request):
+def order_view(request):
     user = request.user
     cart = Cart.objects.get(user=user)
     cart_items = CartItem.objects.filter(cart=cart)
@@ -102,18 +111,60 @@ def delete_review(request, review_id):
 
     return redirect('dish_detail', dish_id=review.dish.id)
 
+@login_required
 def order(request):
     user = request.user
     cart = Cart.objects.get(user=user)
-    cart_items = CartItem.objects.filter(cart=cart)
-    
+    cart_items = cart.items.all()
 
-    total_price = sum(item.dish.price * item.quantity for item in cart_items)
-    payment = request.POST.get('payment')
-    address = request.POST.get('address')
+    if request.method == "POST":
+        payment = request.POST.get('payment')
+        address = request.POST.get('address')
 
-    cart_items.delete()
+        total_price = sum(item.dish.price * item.quantity for item in cart_items)
+
+        order = Order.objects.create(
+            user=user,
+            total_price=total_price,
+            address=address,
+            payment=payment
+        )
+
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                dish_name=item.dish.name,
+                dish_price=item.dish.price,
+                quantity=item.quantity
+            )
+
+        cart_items.delete()
+
+        return render(request, "menu/order.html", {
+            "order": order,
+            "total_price": total_price,
+        })
 
     return render(request, "menu/order.html", {
-        "total_price": total_price,
+        "cart": cart,
+        "cart_items": cart_items,
+    })
+
+def orders_view(request):
+    orders = Order.objects.all()
+    return render(request, "menu/admin_orders.html", {
+        "orders": orders,
+    })
+
+def admin_edit_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        status = request.POST.get('status')
+        order.status = status
+        order.save()
+        return redirect('admin_orders')
+
+    return render(request, "menu/admin_orders_edit.html", {
+        "order": order,
     })

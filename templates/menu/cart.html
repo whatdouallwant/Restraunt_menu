@@ -63,7 +63,7 @@
         </tbody>
     </table>
     {% if cart_items %}
-        <h3>Загальна сума: {{ total_price }} ГРН</h3>
+        <h3>Загальна сума: {{ cart.total_price }} ГРН</h3>
         <a href="{% url 'order' %}" class="btn btn-success">Оформити замовлення</a>
     {% endif %}
 

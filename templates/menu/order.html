@@ -34,8 +34,8 @@
     </div>
 </nav>
 
-<div class="container mt-4" style="margin-top: 500px; position: relative; max-width: 600px; background-color: rgb(54, 164, 255); padding: 20px; border-radius: 10px; height: 400px;">
-    <h2>Оформлення замовлення</h2>
+<div class="order_container">
+  <h2>Оформлення замовлення</h2>
     <form method="post" action="{% url 'order' %}">
         {% csrf_token %}
         <div class="mb-3">
@@ -53,6 +53,9 @@
                 <option value="cash">Готівка</option>
             </select>
         </div>
+        <label type="hidden" name="total_price" value="{{ cart.total_price }}"></label>
+    <form method="post" action="{% url 'order' %}">
+        {% csrf_token %}
         <button type="submit" class="btn btn-primary">Підтвердити замовлення</button>
     </form>
 </div>

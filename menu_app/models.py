@@ -25,7 +25,7 @@ class Dish(models.Model):
         return self.name
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -33,12 +33,14 @@ class Cart(models.Model):
 
     @property
     def total_price(self):
-        return sum(item.total for item in self.items.all())
-    
+        total = sum(item.quantity * item.dish.price for item in self.items.all())
+        return total
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name="items", on_delete=models.CASCADE)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    
 
     @property
     def total(self):
@@ -49,10 +51,16 @@ class Order(models.Model):
         ('cash', 'Готівка'),
         ('card', 'Карта'),
     ]
+    STATUS = [
+        ('new', 'Нове'),
+        ('in_progress', 'В процесі'),
+        ('completed', 'Завершене'),
+        ('canceled', 'Скасоване'),
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, default="new")
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default="new", choices=STATUS)
     address = models.CharField(max_length=250, blank=True, null=True)
     payment = models.CharField(max_length=100, blank=True, null=True, choices=TYPE)
 
