@@ -168,3 +168,56 @@ def admin_edit_order(request, order_id):
     return render(request, "menu/admin_orders_edit.html", {
         "order": order,
     })
+
+def delete_order_for_admin(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.delete()
+    return redirect('admin_orders')
+
+def dish_edit_view(request, dish_id):
+    dish = get_object_or_404(Dish, id=dish_id)
+
+    if request.method == "POST":
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        category = request.POST.get('category')
+        image = request.FILES.get('image')
+
+        dish.name = name
+        dish.description = description
+        dish.price = price
+        dish.category = category
+        if image:
+            dish.image = image
+        dish.save()
+
+        return redirect('dish_detail', dish_id=dish.id)
+
+    return render(request, "menu/dish_edit.html", {
+        "dish": dish,
+    })
+
+def add_new_dish(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        ingredients = request.POST.get('ingredients')
+        price = request.POST.get('price')
+        simelions = request.POST.get('simelions')
+        category = request.POST.get('category')
+        image = request.FILES.get('image')
+
+        Dish.objects.create(
+            name=name,
+            description=description,
+            ingredients=ingredients,
+            price=price,
+            simelions=simelions,
+            category=category,
+            image=image
+        )
+
+        return redirect('home')
+
+    return render(request, "menu/admin_add_new_dish.html")

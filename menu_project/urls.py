@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from menu_app.views import home, cart_view, dish_detail, add_to_cart, order, filter_by_category, delete_from_cart, add_review, delete_review, order_view, admin_edit_order, order_view, orders_view
+from menu_app.views import home, cart_view, dish_detail, add_to_cart, order, filter_by_category, delete_from_cart, add_review, delete_review, order_view, admin_edit_order, order_view, orders_view, delete_order_for_admin, dish_edit_view, add_new_dish
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -34,6 +34,9 @@ urlpatterns = [
     path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
     path('admin_edit_order/<int:order_id>/', admin_edit_order, name='admin_orders_edit'),
     path('admin_orders/', orders_view, name='admin_orders'),
+    path('delete_order_for_admin/<int:order_id>/', delete_order_for_admin, name='delete_order_for_admin'),
+    path('dish_edit/<int:dish_id>/', dish_edit_view, name='dish_edit_view'),
+    path('add_new_dish/', add_new_dish, name='add_new_dish'),
 
 
 ]

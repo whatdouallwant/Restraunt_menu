@@ -45,7 +45,6 @@
                     <th>Дата створення</th>
                     <th>Загальна сума</th>
                     <th>Статус</th>
-                    <th>Дія</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +55,12 @@
                     <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
                     <td>{{ order.total_price }} ГРН</td>
                     <td>{{ order.status }}</td>
+                    <td>
+                        <a href="{% url 'admin_orders_edit' order.id %}" class="btn btn-primary btn-sm">Редагувати</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_order_for_admin' order.id %}" class="btn btn-danger btn-sm">Видалити</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
