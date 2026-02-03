@@ -40,13 +40,34 @@
         <div class="col-md-6">
             <img src="{{ dish.image.url }}" class="img-fluid" alt="{{ dish.name }}">
         </div>
-        <div class="col-md-6">
-            <h2>{{ dish.name }}</h2>
-            <p>{{ dish.description }}</p>
-            <p>Ціна: {{ dish.price }} ГРН / {{ dish.simelions }} §</p>
-            <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-primary">Додати до кошика</a>
-        </div>
-    </div>
+      <table class="table col-md-6">
+          <tr>
+              <th>Назва:</th>
+              <td>{{ dish.name }}</td>
+          </tr>
+          <tr>
+              <th>Опис:</th>
+              <td>{{ dish.description }}</td>
+          </tr>
+          <tr>
+              <th>Склад:</th>
+              <td>{{ dish.ingredients }}</td>
+          </tr>
+          <tr>
+              <th>Категорія:</th>
+              <td>{{ dish.get_category_display }}</td>
+          </tr>
+          <tr>
+              <th>Ціна:</th>
+              <td>{{ dish.price }} ГРН</td>
+          </tr>
+      </table>
+    {% if user.is_authenticated and not user.is_staff %}
+        <form method="post" action="{% url 'add_to_cart' dish.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Додати до кошика</button>
+        </form>
+    {% endif %}
 </div>
 
 <h3>Відгуки</h3>

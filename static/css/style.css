@@ -1,23 +1,171 @@
-.main_background {
-    background-image: linear-gradient(to right, #2190ff, #6ec1ff);
-    width: 2500px;
-    border-radius: 2%;
-}
-.my-btn {
-    background-color: #007bff;
-    color: rgb(255, 255, 255);
-    border-radius: 5px;
-    padding: 10px 20px;
-    text-decoration: none;
-}
+  body{
+    background: radial-gradient(circle at top left, #e8f3ff 0%, #f7fbff 40%, #f6fff8 100%);
+    min-height: 100vh;
+  }
 
-.order_container {
-    margin-top: 100px;
-    margin-left: 450px;
-    position: relative;
-    max-width: 600px;
-    background-color: rgb(54, 164, 255);
-    padding: 20px;
-    border-radius: 10px;
-    height: 400px;
-}
+  .page-wrap{
+    padding-top: 130px; 
+    padding-bottom: 60px;
+  }
+
+  .glass-nav{
+    width: 1300px;
+    margin: auto;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.75) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  }
+
+  .navbar-brand{
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    color: #0d3b66 !important;
+  }
+
+  .nav-link{
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 8px 12px !important;
+    transition: 0.2s ease;
+  }
+  .nav-link:hover{
+    background: rgba(13, 59, 102, 0.08);
+  }
+
+  .category-bar{
+    width: 1300px;
+    margin: 0 auto;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  }
+
+  .category-btn{
+    border-radius: 999px !important;
+    padding: 10px 16px !important;
+    font-weight: 700;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    background: rgba(255,255,255,0.8) !important;
+    color: #0d3b66 !important;
+    transition: 0.2s ease;
+  }
+  .category-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    background: #ffffff !important;
+  }
+
+  .dish-grid{
+    width: 1300px;
+    margin: 0 auto;
+    padding: 25px 0;
+  }
+
+  .dish-card{
+    border-radius: 22px;
+    border: 1px solid rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    transition: 0.25s ease;
+    height: 100%;
+  }
+  .dish-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.10);
+  }
+
+  .dish-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 170px;
+  }
+
+  .dish-title{
+    font-weight: 800;
+    color: #0d3b66;
+    margin-bottom: 8px;
+  }
+
+  .dish-desc{
+    color: rgba(0,0,0,0.65);
+    font-size: 0.95rem;
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+
+  .dish-price{
+    font-weight: 800;
+    color: #1b7f5a;
+    margin-bottom: 12px;
+  }
+
+  .btn-soft{
+    border-radius: 14px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: 0.2s ease;
+  }
+  .btn-soft:hover{
+    transform: translateY(-2px);
+  }
+
+  .btn-main{
+    background: linear-gradient(135deg, #1f7cff, #39c6ff);
+    border: none;
+    color: white;
+  }
+
+  .btn-main:hover{
+    filter: brightness(0.97);
+    box-shadow: 0 12px 22px rgba(31,124,255,0.25);
+  }
+
+  .btn-details{
+    background: rgba(13,59,102,0.08);
+    color: #0d3b66;
+  }
+
+  .btn-details:hover{
+    background: rgba(13,59,102,0.12);
+  }
+
+  .glass-card{
+    border-radius: 28px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+    }
+
+  .admin-add-wrap{
+    width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+
+  .admin-add-btn{
+    border-radius: 16px;
+    font-weight: 800;
+    padding: 12px 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 1400px){
+    .glass-nav, .category-bar, .dish-grid, .admin-add-wrap{
+      width: 95%;
+    }
+  }

@@ -2,98 +2,118 @@
 
 {% block content %}
 
-<div class="container main_background">
-  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" 
-  style="width: 1300px; margin: auto; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; padding: 10px;">
-      <div class="container-fluid">
+<div class="container-fluid page-wrap">
+
+  <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+    <div class="container-fluid">
       <a class="navbar-brand">Sol-sol!</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-        </li>
-        {% if user.is_authenticated %}
-          {% if not user.is_staff %}
+        <ul class="navbar-nav gap-1">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+
+          {% if user.is_authenticated %}
+            {% if not user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin_orders' %}">Manage Orders</a>
+              </li>
+            {% endif %}
+
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'admin_orders' %}">Manage Orders</a>
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
           {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-          </li>
-        {% endif %}
-        {% if not user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-        {% endif %}
+
+          {% if not user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container mt-4" >
-    <form method="get" action="{% url 'filter_by_category' category='all' %}" class="d-flex flex-column align-items-center fixed-top"
-    style="margin-top: 40px; padding: 20px; border-radius:10px;">
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <a href="{% url 'home' %}" class="btn btn-secondary my-btn">Всі</a>
-        <a href="{% url 'filter_by_category' category='salad' %}" class="btn btn-secondary my-btn">Салати</a>
-        <a href="{% url 'filter_by_category' category='main_course' %}" class="btn btn-secondary my-btn">Основні страви</a>
-        <a href="{% url 'filter_by_category' category='dessert' %}" class="btn btn-secondary my-btn">Десерти</a>
-        <a href="{% url 'filter_by_category' category='beverage' %}" class="btn btn-secondary my-btn">Напої</a>
-        <a href="{% url 'filter_by_category' category='soup' %}" class="btn btn-secondary my-btn">Супи</a>
-      </div>
-    </form>
-    <div class="row mt-4" style="padding: 40px;">
-      {% for dish in dishes %}
-        <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            {% if dish.image %}
-              <img src="{{ dish.image.url }}" class="img-fluid rounded-start" alt="{{ dish.name }}">
-            {% endif %}
-          </div>
-            <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">{{ dish.name }}</h5>
-              <p class="card-text">{{ dish.description }}</p>
-              <p class="card-text">{{ dish.price }} ГРН / {{ dish.simelions }} §</p>
-              {% if not user.is_staff %}
-                <a href="{% url 'add_to_cart' dish.id %}" class="my-btn">Додати до кошика</a>
-                {% else %}
-                  <a href="{% url 'dish_edit_view' dish.id %}" class="btn btn-warning btn-sm">Редагувати</a>
-                {% endif %}
-                <a href="{% url 'dish_detail' dish.id %}" class="btn btn-secondary">Детальніше</a>
-            </div>
-            </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="button" style="width: 300px; height: 200px; margin-right: 200px; text-align: center; margin-bottom: 20px;">
-      {% if user.is_staff %}
-        <a href="{% url 'add_new_dish' %}" class="btn btn-warning btn-sm">Додати страву</a>
-      {% endif %}
+  <div class="category-bar mt-3">
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      <a href="{% url 'home' %}" class="btn category-btn">Всі</a>
+      <a href="{% url 'filter_by_category' category='salad' %}" class="btn category-btn">Салати</a>
+      <a href="{% url 'filter_by_category' category='main_course' %}" class="btn category-btn">Основні страви</a>
+      <a href="{% url 'filter_by_category' category='dessert' %}" class="btn category-btn">Десерти</a>
+      <a href="{% url 'filter_by_category' category='beverage' %}" class="btn category-btn">Напої</a>
+      <a href="{% url 'filter_by_category' category='soup' %}" class="btn category-btn">Супи</a>
     </div>
   </div>
+
+  <div class="dish-grid">
+    <div class="row g-4">
+      {% for dish in dishes %}
+        <div class="col-12 col-md-6">
+          <div class="dish-card">
+            <div class="row g-0">
+              <div class="col-md-4">
+                {% if dish.image %}
+                  <img src="{{ dish.image.url }}" class="dish-img" alt="{{ dish.name }}">
+                {% else %}
+                  <div class="d-flex align-items-center justify-content-center h-100"
+                       style="min-height:170px; background: rgba(0,0,0,0.03);">
+                    <span class="text-muted fw-semibold">Немає фото</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-8">
+                <div class="p-3 p-md-4">
+                  <h5 class="dish-title">{{ dish.name }}</h5>
+                  <p class="dish-desc">{{ dish.description }}</p>
+                  <div class="dish-price">{{ dish.price }} ГРН / {{ dish.simelions }} §</div>
+
+                  <div class="d-flex flex-wrap gap-2">
+                    {% if not user.is_staff %}
+                      <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-soft btn-main">
+                        Додати до кошика
+                      </a>
+                    {% else %}
+                      <a href="{% url 'dish_edit_view' dish.id %}" class="btn btn-soft btn-warning">
+                        Редагувати
+                      </a>
+                    {% endif %}
+
+                    <a href="{% url 'dish_detail' dish.id %}" class="btn btn-soft btn-details">
+                      Детальніше
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if user.is_staff %}
+      <div class="admin-add-wrap mt-4">
+        <a href="{% url 'add_new_dish' %}" class="btn btn-warning admin-add-btn">
+          + Додати страву
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
 </div>
-
-
-
-
-
-
-
-
-
 {% endblock %}
